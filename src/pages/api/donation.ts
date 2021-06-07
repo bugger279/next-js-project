@@ -43,7 +43,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse, next: NextHandler)
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {
-        const donation = new Donation(req.body);
+        const donation = new Donation(JSON.parse(req.body));
         await donation.save();
         res.status(201).json(donation);
     } catch (error) {

@@ -1,7 +1,8 @@
-import { quotes } from "@libs/data";
+import { IQuote } from "@libs/types";
+import { GetStaticPropsContext, NextPage } from "next";
 import Image from "next/image";
 
-const family = () => {
+const family: NextPage<{quotes: IQuote[]}> = ({quotes}) => {
   return (
     <div className="grid md:grid-cols-2 p-5 lg:px-24 h-full gap-5">
       <div className="textBlock-wrapper">
@@ -37,3 +38,19 @@ const family = () => {
 };
 
 export default family;
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  let data;
+  try {
+    const res = await fetch(`${process.env.API_BASE_ENDPOINT}api/quotes`);
+    data = await res.json();
+  } catch (error) {
+    console.log(error.message);
+  }
+  return {
+    props: {
+      quotes: data ?? []
+    },
+    revalidate: 10
+  }
+}

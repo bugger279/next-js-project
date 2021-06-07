@@ -40,6 +40,23 @@ const donate = () => {
     addPaypalScript();
   }, []);
 
+  const addDonationInDB = async (name: string) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_ENDPOINT}api/donation`, {
+        method: 'post',
+        body: JSON.stringify({
+          name,
+          amount
+        })
+      });
+
+      const data = await res.json();
+      console.log('data donation', data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   return (
     <div className="grid md:grid-cols-2 p-5 lg:px-24 h-full gap-5">
       <div className="textBlock-wrapper">
@@ -66,7 +83,7 @@ const donate = () => {
             amount={amount}
             // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
             onSuccess={(details, data) => {
-              console.log(details);
+              addDonationInDB(details.payer.name.given_name);
               alert("Transaction completed by " + details.payer.name.given_name);
     
               // // OPTIONAL: Call your server to save the transaction
