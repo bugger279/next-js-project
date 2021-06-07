@@ -42,7 +42,7 @@ export default family;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   let data;
   try {
-    const res = await fetch(`${process.env.API_BASE_ENDPOINT}api/quotes`);
+    const res = await fetch(`${process.env.API_BASE_ENDPOINT}/api/quotes`);
     data = await res.json();
   } catch (error) {
     console.log(error.message);
